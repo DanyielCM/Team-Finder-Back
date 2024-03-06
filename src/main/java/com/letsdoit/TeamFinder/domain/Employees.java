@@ -26,6 +26,7 @@ public class Employees implements UserDetails {
     private String employeeUserName;
     @Column(unique = true)
     private String employeeEmail;
+    @JsonIgnore
     private String employeePassword;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organization_id")
@@ -57,39 +58,38 @@ public class Employees implements UserDetails {
         this.projecthours=0;
     }
 
-    public Employees(String email) {
-        this.employeeEmail = email;
-    }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
     }
 
+    @JsonIgnore
     @Override
     public String getPassword() {
         return this.employeePassword;
     }
-
+    @JsonIgnore
     @Override
     public String getUsername() {
         return this.employeeUserName;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
