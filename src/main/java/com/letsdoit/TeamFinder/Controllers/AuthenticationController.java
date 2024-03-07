@@ -30,7 +30,6 @@ public class AuthenticationController {
     private EmployeeRepository employeeRepository;
 
 
-    //TODO: adauga restul de campuri din Organization
     @PostMapping("/register")
     public ResponseEntity<?> registerOrganization(@RequestBody RegistrationDTO registrationDTO) {
         try {
@@ -77,14 +76,14 @@ public class AuthenticationController {
     }*/
 
 
-    //TODO: modifica pentru a da response cu status code
     @PostMapping("/employee/register")
-    public Employees registerEmployee(@RequestParam Integer orgId, @RequestBody RegistrationEmployeeDTO registerEmployeeDTO) {
+    public ResponseEntity<?> registerEmployee(@RequestParam Integer orgId, @RequestBody RegistrationEmployeeDTO registerEmployeeDTO) {
         try {
-            return authenticationService.registerEmployee(registerEmployeeDTO.getEmployeeUserName(), registerEmployeeDTO.getEmployeeEmail().toLowerCase(), registerEmployeeDTO.getEmployeePassword(), orgId);
+            Employees registeredEmployee = authenticationService.registerEmployee(registerEmployeeDTO.getEmployeeUserName(), registerEmployeeDTO.getEmployeeEmail().toLowerCase(), registerEmployeeDTO.getEmployeePassword(), orgId);
+            return ResponseEntity.ok(registeredEmployee);
         } catch (DataIntegrityViolationException e) {
             log.info("User " + registerEmployeeDTO.getEmployeeEmail() + " already exists");
-            return null;
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // return httpStatus 409 Conflict
         }
     }
 

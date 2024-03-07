@@ -30,7 +30,6 @@ public class Employees implements UserDetails {
     private String employeePassword;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organization_id")
-    @JsonIgnore
     private Organization organization;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
