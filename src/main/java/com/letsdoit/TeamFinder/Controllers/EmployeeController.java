@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -21,13 +20,13 @@ public class EmployeeController {
     }
 
     @PostMapping("/addRole/{id}/{role}")
-    public ResponseEntity updateRole(@PathVariable("id") Integer id, @PathVariable("role") String role) {
+    public ResponseEntity addRole(@PathVariable("id") Integer id, @PathVariable("role") String role) {
         try{
             employeeServices.addRoleForEmployee(id, role);
             return ResponseEntity.status(200).body("Role added successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to add role");
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 

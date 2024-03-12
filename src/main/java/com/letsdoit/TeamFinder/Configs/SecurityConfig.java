@@ -60,6 +60,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/api/employeelink").hasRole("OrganizationAdmin");
                     auth.requestMatchers("/api/createDepartment").hasRole("OrganizationAdmin");
+                    auth.requestMatchers("/api/**").hasAnyRole("OrganizationAdmin", "DepartmentManager");
                     auth.anyRequest().authenticated();
                 });
 

@@ -50,6 +50,28 @@ public class DepartmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+   //Change department manager
+    @PostMapping("/changeDepartmentManager")
+    public ResponseEntity changeDepartmentManager(@RequestParam("department") Integer departmentId, @RequestParam("newManager") Integer managerId) {
+        try{
+            departmentServices.changeDepartmentManager(departmentId, managerId);
+            return ResponseEntity.status(200).body("Department manager changed successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to change department manager");
+        }
+    }
+
+    @PostMapping("/updateDepartmentName")
+    public ResponseEntity updateDepartmentName(@RequestParam("department") Integer departmentId, @RequestParam("newName") String newName) {
+        try{
+            departmentServices.updateDepartmentName(departmentId, newName);
+            return ResponseEntity.status(200).body("Department name updated successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to update department name");
+        }
+    }
 
     // This method is used to delete a department
     @DeleteMapping("/deleteDepartment/{id}")
