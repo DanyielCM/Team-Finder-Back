@@ -58,9 +58,6 @@ public class Employees implements UserDetails {
     }
 
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
 
     @JsonIgnore
     @Override

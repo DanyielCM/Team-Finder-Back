@@ -59,8 +59,7 @@ public class SecurityConfig {
                 {
                     auth.requestMatchers("/auth/**").permitAll();
                     auth.requestMatchers("/api/employeelink").hasRole("OrganizationAdmin");
-                    auth.requestMatchers("/admin/**").hasRole("OrganizationAdmin");
-                    auth.requestMatchers("/user/**").hasAnyRole("Employee", "OrganizationAdmin");
+                    auth.requestMatchers("/api/createDepartment").hasRole("OrganizationAdmin");
                     auth.anyRequest().authenticated();
                 });
 

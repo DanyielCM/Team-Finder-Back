@@ -40,6 +40,22 @@ public class TeamFinderApplication {
 				return roleRepository.save(role);
 			});
 
+			Role departmentManagerRole = roleRepository.findByAuthority("DepartmentManager").orElseGet(() -> {
+				Role role = new Role();
+				role.setAuthority("DepartmentManager");
+				return roleRepository.save(role);
+			});
+
+			Role projectManagerRole = roleRepository.findByAuthority("ProjectManager").orElseGet(() -> {
+				Role role = new Role();
+				role.setAuthority("ProjectManager");
+				return roleRepository.save(role);
+			});
+
+
+
+
+
 
 
 
