@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     // This class is used to configure the CORS policy
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/auth/**")
+        registry.addMapping("/**")
                 .allowedOrigins("http://localhost:5173")
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("*")

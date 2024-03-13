@@ -26,8 +26,9 @@ public class DepartmentController {
 
     // This method is used to create a department
     @PostMapping("/createDepartment")
-    public ResponseEntity createDepartament(@RequestBody DepartmentDTO department){
+    public ResponseEntity createDepartment(@RequestBody DepartmentDTO department){
         try{
+            
             Department departmentObj = new Department(department.getDepartmentName(), department.getDepartmentDescription(), department.getDepartmentManager(), department.getOrganizationId());
             departmentServices.createDepartment(departmentObj);
             return ResponseEntity.status(201).body("Department created successfully");
@@ -40,7 +41,7 @@ public class DepartmentController {
 
     // This method is used to get a department
     @GetMapping("/getDepartments/{orgId}")
-    public ResponseEntity<List<Department>> getDepartament(@PathVariable("orgId") Integer id) {
+    public ResponseEntity<List<Department>> getDepartment(@PathVariable("orgId") Integer id) {
         try{
             Organization organization = new Organization();
             organization.setOrganizationId(id);

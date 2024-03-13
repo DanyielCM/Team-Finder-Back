@@ -2,6 +2,7 @@ package com.letsdoit.TeamFinder.services;
 
 
 import com.letsdoit.TeamFinder.domain.Employees;
+import com.letsdoit.TeamFinder.domain.Organization;
 import com.letsdoit.TeamFinder.domain.Role;
 import com.letsdoit.TeamFinder.repositories.EmployeeRepository;
 import com.letsdoit.TeamFinder.repositories.RoleRepository;
@@ -59,6 +60,15 @@ public class EmployeeServices {
         }
         catch (IllegalStateException e){
             throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    public List<Employees> getEmployees(Organization organization) {
+        try{
+            return employeeRepository.findAllByOrganization(organization);
+        }
+        catch (Exception e){
+            throw new IllegalStateException("Failed to get employees");
         }
     }
 
