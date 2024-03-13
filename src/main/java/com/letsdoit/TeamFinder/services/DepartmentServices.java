@@ -49,4 +49,10 @@ public class DepartmentServices {
         departmentRepository.save(department);
     }
 
+    public void updateDepartmentDescription(Integer id, String description) {
+        Department department = departmentRepository.findById(id).get();
+        department.setDepartmentDescription(description);
+        departmentRepository.save(department);
+    }
+
 }

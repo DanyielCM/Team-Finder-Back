@@ -74,6 +74,17 @@ public class DepartmentController {
         }
     }
 
+    @PostMapping("/updateDepartmentDescription")
+    public ResponseEntity updateDepartmentDescription(@RequestParam("department") Integer departmentId, @RequestParam("newDescription") String newDescription) {
+        try{
+            departmentServices.updateDepartmentDescription(departmentId, newDescription);
+            return ResponseEntity.status(200).body("Department description updated successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to update department description");
+        }
+    }
+
     // This method is used to delete a department
     @DeleteMapping("/deleteDepartment/{id}")
     public ResponseEntity deleteDepartment(@PathVariable("id") Integer id) {
