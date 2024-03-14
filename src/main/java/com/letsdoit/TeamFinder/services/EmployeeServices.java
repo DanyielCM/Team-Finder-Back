@@ -1,26 +1,36 @@
 package com.letsdoit.TeamFinder.services;
 
 
+import com.letsdoit.TeamFinder.domain.Department;
 import com.letsdoit.TeamFinder.domain.Employees;
 import com.letsdoit.TeamFinder.domain.Organization;
 import com.letsdoit.TeamFinder.domain.Role;
+import com.letsdoit.TeamFinder.repositories.DepartmentRepository;
 import com.letsdoit.TeamFinder.repositories.EmployeeRepository;
+import com.letsdoit.TeamFinder.repositories.OrganizationRepository;
 import com.letsdoit.TeamFinder.repositories.RoleRepository;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
 
+@Log
 @Service
 public class EmployeeServices {
     private final EmployeeRepository employeeRepository;
     private final RoleRepository roleRepository;
+    private final OrganizationRepository organizationRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Autowired
-    public EmployeeServices(EmployeeRepository employeeRepository, RoleRepository roleRepository) {
+    public EmployeeServices(EmployeeRepository employeeRepository, RoleRepository roleRepository, OrganizationRepository organizationRepository, DepartmentRepository departmentRepository) {
         this.employeeRepository = employeeRepository;
         this.roleRepository = roleRepository;
+        this.organizationRepository = organizationRepository;
+        this.departmentRepository = departmentRepository;
     }
 
     public void addRoleForEmployee(Integer employeeId, String role) {
@@ -89,6 +99,8 @@ public class EmployeeServices {
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+
 
 
 }

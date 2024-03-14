@@ -2,10 +2,9 @@ package com.letsdoit.TeamFinder.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.Objects;
 
 
 // This class is used to create a table in the database
@@ -22,7 +21,8 @@ public class Department {
     private String departmentName;
     private String departmentDescription;
     @JoinColumn(name = "employee_id")
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Employees departmentManager;
     @JoinColumn(name = "organization_id")
     @ManyToOne
@@ -38,4 +38,18 @@ public class Department {
         organizationId.setOrganizationId(organizationID);
     }
 
+    @Override
+    public String toString() {
+        return "Department{" +
+                "departmentId=" + departmentId +
+                ", departmentName='" + departmentName + '\'' +
+                ", departmentDescription='" + departmentDescription + '\'' +
+                ", organizationId=" + organizationId +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(departmentId, departmentName, departmentDescription, organizationId);
+    }
 }

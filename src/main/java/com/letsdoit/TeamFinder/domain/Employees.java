@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -39,6 +40,34 @@ public class Employees implements UserDetails {
     )
     private Set<Role> authorities;
     private Integer projecthours;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name="employees_department_junction",
+        joinColumns = @JoinColumn(name = "employee_id"),
+        inverseJoinColumns = @JoinColumn(name = "department_id")
+    )
+    private Set<Department> departments;
+
+
+    @Override
+    public String toString() {
+        return "Employees{" +
+                "employeeId=" + employeeId +
+                ", employeeUserName='" + employeeUserName + '\'' +
+                ", employeeEmail='" + employeeEmail + '\'' +
+                ", employeePassword='" + employeePassword + '\'' +
+                ", organization=" + organization +
+                ", authorities=" + authorities +
+                ", projecthours=" + projecthours +
+                '}';
+    }
+
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, employeeUserName, employeeEmail, employeePassword, organization, authorities, projecthours);
+    }
 
     public Employees(String employeeUserName, String employeePassword, String employeeEmail, Set<Role> authorities) {
         this.employeeUserName = employeeUserName;
@@ -58,6 +87,10 @@ public class Employees implements UserDetails {
     }
 
 
+    @JsonIgnore
+    public Set<Department> getDepartments() {
+        return this.departments;
+    }
 
     @JsonIgnore
     @Override

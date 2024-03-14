@@ -52,7 +52,6 @@ public Employees setOrgAdminId(Employees orgAdminId)
         this.organizationName = organizationName;
         this.hqAddress = hqAddress;
         this.orgAdminId = orgAdminId;
-        this.EmployeeRegisterURL = "http://localhost:8080/employee/register?organizationUserName=" + organizationName.replaceAll(" ","");
     }
 
 
