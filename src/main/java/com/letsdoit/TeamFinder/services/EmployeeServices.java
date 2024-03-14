@@ -14,6 +14,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -76,6 +77,17 @@ public class EmployeeServices {
     public List<Employees> getEmployees(Organization organization) {
         try{
             return employeeRepository.findAllByOrganization(organization);
+        }
+        catch (Exception e){
+            throw new IllegalStateException("Failed to get employees");
+        }
+    }
+
+    public List<Employees> getEmployeesByRole(Organization organization, String role) {
+        try{
+            Set<Role> roleObj = new HashSet<>();
+            roleObj.add(roleRepository.findByAuthority(role).orElseThrow(()-> {throw new IllegalStateException("Role " + role + " does not exist");}));
+            return employeeRepository.findAllByOrganizationAndAuthorities(organization, roleObj);
         }
         catch (Exception e){
             throw new IllegalStateException("Failed to get employees");

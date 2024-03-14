@@ -39,7 +39,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/getRole/{id}")
-    public ResponseEntity getRole(@PathVariable("id") Integer id) {
+    public ResponseEntity getRole(@PathVariable("id") Integer id) { //gets the role of the employee
         try{
             Set<Role> role = employeeServices.getRoleForEmployee(id);
             return ResponseEntity.status(200).body(role);
@@ -54,6 +54,17 @@ public class EmployeeController {
         try{
             Organization organization = organizationRepository.findById(orgId).orElseThrow(()-> {throw new IllegalStateException("Organization with id " + orgId + " does not exist");});
             return ResponseEntity.status(200).body(employeeServices.getEmployees(organization));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to get employees");
+        }
+    }
+
+    @GetMapping("/getEmployeesByRole")
+    public ResponseEntity getEmployeesByRole(@RequestParam Integer orgId, @RequestParam String role) {
+        try{
+            Organization organization = organizationRepository.findById(orgId).orElseThrow(()-> {throw new IllegalStateException("Organization with id " + orgId + " does not exist");});
+            return ResponseEntity.status(200).body(employeeServices.getEmployeesByRole(organization, role));
         }
         catch (Exception e){
             return ResponseEntity.status(500).body("Failed to get employees");
