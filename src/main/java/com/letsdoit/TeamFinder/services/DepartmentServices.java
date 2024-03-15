@@ -38,6 +38,10 @@ public class DepartmentServices {
         return departmentRepository.findAllByOrganizationId(id);
     }
 
+    public List<Employees> getEmployeesFromDepartment(Integer departmentId) {
+        return employeeRepository.findAllByDepartments(departmentRepository.findByDepartmentId(departmentId).get());
+    }
+
     // This method will be used to delete a department
     public void deleteDepartment(Integer id) {
         departmentRepository.deleteById(id);

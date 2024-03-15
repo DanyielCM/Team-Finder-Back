@@ -1,6 +1,7 @@
 package com.letsdoit.TeamFinder.Controllers;
 
 import com.letsdoit.TeamFinder.domain.DTO.DepartmentDTO;
+import com.letsdoit.TeamFinder.domain.DTO.EmployeeDTO;
 import com.letsdoit.TeamFinder.domain.Department;
 import com.letsdoit.TeamFinder.domain.Employees;
 import com.letsdoit.TeamFinder.domain.Organization;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log
 @RestController
@@ -52,6 +54,19 @@ public class DepartmentController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/getEmployeesFromDepartment/{departmentId}")
+    public ResponseEntity<List<EmployeeDTO>> getEmployeesFromDepartment(@PathVariable("departmentId") Integer departmentId) {
+        try{
+            List<Employees> employees = departmentServices.getEmployeesFromDepartment(departmentId);
+            List<EmployeeDTO> employeesDTO = employees.stream().map(employee -> new EmployeeDTO(employee.getEmployeeId(), employee.getEmployeeUserName(), employee.getEmployeeEmail(), employee.getOrganization().getOrganizationId(), employee.getProjecthours())).toList();
+            return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
    //Change department manager
     @PostMapping("/changeDepartmentManager")
     public ResponseEntity changeDepartmentManager(@RequestParam("department") Integer departmentId, @RequestParam("newManager") Integer managerId) {

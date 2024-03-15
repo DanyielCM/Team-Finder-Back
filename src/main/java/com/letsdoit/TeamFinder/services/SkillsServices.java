@@ -4,17 +4,21 @@ import com.letsdoit.TeamFinder.domain.Department;
 import com.letsdoit.TeamFinder.domain.Employees;
 import com.letsdoit.TeamFinder.domain.Skills.EmployeeSkills;
 import com.letsdoit.TeamFinder.domain.Skills.SkillCategory;
+import com.letsdoit.TeamFinder.domain.Skills.UserSkills;
 import com.letsdoit.TeamFinder.repositories.DepartmentRepository;
 import com.letsdoit.TeamFinder.repositories.EmployeeRepository;
 import com.letsdoit.TeamFinder.repositories.OrganizationRepository;
 import com.letsdoit.TeamFinder.repositories.Skill.EmployeeSkillsRepository;
 import com.letsdoit.TeamFinder.repositories.Skill.SkillCategoryRepository;
+import com.letsdoit.TeamFinder.repositories.Skill.UserSkillsRepository;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jmx.access.InvalidInvocationException;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Log
@@ -25,14 +29,16 @@ public class SkillsServices {
     private final OrganizationRepository organizationRepository;
     private final DepartmentRepository departmentRepository;
     private final EmployeeRepository employees;
+    private final UserSkillsRepository userSkillsRepository;
 
     @Autowired
-    public SkillsServices(DepartmentRepository departmentRepository, EmployeeRepository employees, SkillCategoryRepository skillCategoryRepository, OrganizationRepository organizationRepository, EmployeeSkillsRepository employeeSkillsRepository) {
+    public SkillsServices(UserSkillsRepository userSkillsRepository, DepartmentRepository departmentRepository, EmployeeRepository employees, SkillCategoryRepository skillCategoryRepository, OrganizationRepository organizationRepository, EmployeeSkillsRepository employeeSkillsRepository) {
         this.skillCategoryRepository = skillCategoryRepository;
         this.departmentRepository = departmentRepository;
         this.employeeSkillsRepository = employeeSkillsRepository;
         this.organizationRepository = organizationRepository;
         this.employees = employees;
+        this.userSkillsRepository = userSkillsRepository;
     }
 
     public void addSkillCategory(String skillCategoryName, Integer organizationId) {
@@ -90,6 +96,19 @@ public class SkillsServices {
         employeeSkills.setSkillName(skillName);
         employeeSkills.setSkillDescription(skillDescription);
         employeeSkillsRepository.save(employeeSkills);
+    }
+
+    public void addUserSkills(Integer employeeId, Integer skillId, Integer proficiencyLevel, String experience) {
+        Employees employee = employees.findById(employeeId).orElseThrow(() -> new InvalidInvocationException("Employee not found"));
+        if(userSkillsRepository.findByEmployeeId(employee).isEmpty()){
+            userSkillsRepository.save(new UserSkills(employee, new HashSet<>(), proficiencyLevel, experience));
+        }
+        UserSkills employeeWithSkills = userSkillsRepository.findByEmployeeId(employee).orElseThrow(() -> new InvalidInvocationException("User skills not found"));
+        EmployeeSkills skill = employeeSkillsRepository.findById(skillId).orElseThrow(() -> new InvalidInvocationException("Skill not found"));
+        Set<EmployeeSkills> userSkills = userSkillsRepository.findByEmployeeId(employee).get().getSkillId();
+        userSkills.add(skill);
+        employeeWithSkills.setSkillId(userSkills);
+        userSkillsRepository.save(employeeWithSkills);
     }
 
 }

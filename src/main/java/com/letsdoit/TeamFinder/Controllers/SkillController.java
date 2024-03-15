@@ -76,15 +76,7 @@ public class SkillController {
         }
     }
 
-    /*@GetMapping("/getSkillsByCategoryAndDepartment/{skillCategoryId}/{departmentId}")
-    public ResponseEntity getSkillsByCategory(@PathVariable("skillCategoryId") Integer skillCategoryId, @PathVariable("departmentId") Integer departmentId){
-        try{
-            return ResponseEntity.status(200).body(skillsServices.getSkillsByCategory(skillCategoryId));
-        }
-        catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to get skills by category " + e.getMessage());
-        }
-    }*/
+    //TODO: ADD DTOs
 
 
     @GetMapping("/getSkillsByDepartmentAndCategory/{departmentId}/{skillCategoryId}")
@@ -116,6 +108,22 @@ public class SkillController {
         }
         catch (Exception e){
             return ResponseEntity.status(500).body("Failed to update skill");
+        }
+    }
+
+    //---------------------------User Skills---------------------------
+
+
+    @PostMapping("/addUserSkills/{employeeId}/{skillId}/{proficiencyLevel}/{experience}")
+    public ResponseEntity addUserSkills(@PathVariable("employeeId") Integer employeeId, @PathVariable("skillId") Integer skillId, @PathVariable("proficiencyLevel") Integer proficiencyLevel, @PathVariable("experience") String experience) {
+        try{
+            if(proficiencyLevel < 1 || proficiencyLevel > 5)
+                return ResponseEntity.status(400).body("Proficiency level must be between 1 and 5");
+            skillsServices.addUserSkills(employeeId, skillId, proficiencyLevel, experience);
+            return ResponseEntity.status(200).body("User skills added successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to add user skills" + e.getMessage());
         }
     }
 
