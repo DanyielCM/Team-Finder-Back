@@ -39,6 +39,10 @@ public class Employees implements UserDetails {
     )
     private Set<Role> authorities;
     private Integer projecthours;
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "employee_id")
+    private ProjectManagers projectManager;
 
     public Employees(String employeeUserName, String employeePassword, String employeeEmail, Set<Role> authorities) {
         this.employeeUserName = employeeUserName;

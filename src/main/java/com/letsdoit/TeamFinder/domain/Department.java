@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 
 // This class is used to create a table in the database
 @Entity
@@ -24,5 +26,12 @@ public class Department {
     @JoinColumn(name = "organization_id")
     @ManyToOne
     private Organization organizationId;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "department_skills",
+            joinColumns = @JoinColumn(name = "department_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id")
 
+    )
+    private Set<Skills> skillsSet;
 }
