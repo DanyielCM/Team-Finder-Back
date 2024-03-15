@@ -54,5 +54,23 @@ public Employees setOrgAdminId(Employees orgAdminId)
         this.orgAdminId = orgAdminId;
     }
 
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "organizationId=" + organizationId +
+                ", organizationName='" + organizationName + '\'' +
+                ", hqAddress='" + hqAddress + '\'' +
+                ", orgAdminId=" + orgAdminId.getEmployeeId() +
+                ", EmployeeRegisterURL='" + EmployeeRegisterURL + '\'' +
+                ", logo='" + logo + '\'' +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return  organizationId.hashCode() + organizationName.hashCode() + hqAddress.hashCode() + EmployeeRegisterURL.hashCode();
+
+    }
+
 
 }
