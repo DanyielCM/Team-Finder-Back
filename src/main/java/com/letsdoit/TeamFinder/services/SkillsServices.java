@@ -1,5 +1,6 @@
 package com.letsdoit.TeamFinder.services;
 
+import com.letsdoit.TeamFinder.domain.DTO.SkillsThatAUserHaveDTO;
 import com.letsdoit.TeamFinder.domain.Department;
 import com.letsdoit.TeamFinder.domain.Employees;
 import com.letsdoit.TeamFinder.domain.Skills.EmployeeSkills;
@@ -99,16 +100,26 @@ public class SkillsServices {
     }
 
     public void addUserSkills(Integer employeeId, Integer skillId, Integer proficiencyLevel, String experience) {
+        if(userSkillsRepository.findBySkillId(employeeSkillsRepository.findById(skillId).orElseThrow(() -> new InvalidInvocationException("Skill not found"))).isPresent())
+            throw new InvalidInvocationException("Skill already exists");
         Employees employee = employees.findById(employeeId).orElseThrow(() -> new InvalidInvocationException("Employee not found"));
-        if(userSkillsRepository.findByEmployeeId(employee).isEmpty()){
-            userSkillsRepository.save(new UserSkills(employee, new HashSet<>(), proficiencyLevel, experience));
-        }
-        UserSkills employeeWithSkills = userSkillsRepository.findByEmployeeId(employee).orElseThrow(() -> new InvalidInvocationException("User skills not found"));
         EmployeeSkills skill = employeeSkillsRepository.findById(skillId).orElseThrow(() -> new InvalidInvocationException("Skill not found"));
-        Set<EmployeeSkills> userSkills = userSkillsRepository.findByEmployeeId(employee).get().getSkillId();
-        userSkills.add(skill);
-        employeeWithSkills.setSkillId(userSkills);
-        userSkillsRepository.save(employeeWithSkills);
+        userSkillsRepository.save(new UserSkills(employee, skill, proficiencyLevel, experience));
+    }
+
+    public void removeUserSkill(Integer userSkillId) {
+        userSkillsRepository.deleteById(userSkillId);
+    }
+
+    public Set<SkillsThatAUserHaveDTO> getSkillsByEmployee(Integer employeeId) {
+        Employees employee = employees.findById(employeeId).orElseThrow(() -> new InvalidInvocationException("Employee not found"));
+        Set<SkillsThatAUserHaveDTO> skills = new HashSet<>();
+        userSkillsRepository.findAllByEmployeeId(employee).ifPresent(userSkills -> {
+            userSkills.forEach(userSkill -> {
+                skills.add(new SkillsThatAUserHaveDTO(userSkill.getUserSkillId(), userSkill.getSkillId().getSkillName()));
+            });
+        });
+        return skills;
     }
 
 }

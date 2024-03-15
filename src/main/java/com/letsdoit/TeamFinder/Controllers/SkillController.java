@@ -1,6 +1,7 @@
 package com.letsdoit.TeamFinder.Controllers;
 
 import com.letsdoit.TeamFinder.domain.DTO.SkillsFromCategoryDTO;
+import com.letsdoit.TeamFinder.domain.DTO.SkillsThatAUserHaveDTO;
 import com.letsdoit.TeamFinder.domain.Skills.EmployeeSkills;
 import com.letsdoit.TeamFinder.domain.Skills.SkillCategory;
 import com.letsdoit.TeamFinder.repositories.OrganizationRepository;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/skills")
@@ -124,6 +127,29 @@ public class SkillController {
         }
         catch (Exception e){
             return ResponseEntity.status(500).body("Failed to add user skills" + e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/removeUserSkill/{userSkillId}")
+    public ResponseEntity removeUserSkill(@PathVariable("userSkillId") Integer userSkillId) {
+        try{
+            skillsServices.removeUserSkill(userSkillId);
+            return ResponseEntity.status(200).body("User skill removed successfully");
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to remove user skill");
+        }
+    }
+
+    @GetMapping("/getUserSkills/{employeeId}")
+    public ResponseEntity getUserSkills(@PathVariable("employeeId") Integer employeeId) {
+        try{
+            Set<SkillsThatAUserHaveDTO> skillsThatAUserHaveDTO = new HashSet<>();
+            skillsThatAUserHaveDTO = skillsServices.getSkillsByEmployee(employeeId);
+            return ResponseEntity.status(200).body(skillsThatAUserHaveDTO);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to get user skills");
         }
     }
 

@@ -20,17 +20,13 @@ public class UserSkills {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id")
     private Employees employeeId;
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_skills_employee_skills",
-            joinColumns = @JoinColumn(name = "user_skill_id"),
-            inverseJoinColumns = @JoinColumn(name = "skill_id")
-    )
-    private Set<EmployeeSkills> skillId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "skill_id")
+    private EmployeeSkills skillId;
     private Integer proficiencyLevel;
     private String experience;
 
-    public UserSkills(Employees employeeId, Set<EmployeeSkills> skillId, Integer proficiencyLevel, String experience) {
+    public UserSkills(Employees employeeId, EmployeeSkills skillId, Integer proficiencyLevel, String experience) {
         this.employeeId = employeeId;
         this.skillId = skillId;
         this.proficiencyLevel = proficiencyLevel;
