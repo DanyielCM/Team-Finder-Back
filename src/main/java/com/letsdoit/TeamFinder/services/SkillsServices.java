@@ -95,7 +95,7 @@ public class SkillsServices {
         departments.forEach(department -> {
             employeeSkills.addAll(employeeSkillsRepository.findAllByDepartment(department));
         });
-        return employeeSkills.stream().map(employeeSkill -> new SkillsFromCategoryDTO(employeeSkill.getSkillId(), employeeSkill.getSkillName(), employeeSkill.getSkillDescription(),employeeSkill.getEmployeeId(), employeeSkill.getDepartment())).toList();
+        return employeeSkills.stream().map(employeeSkill -> new SkillsFromCategoryDTO(employeeSkill.getSkillId(), employeeSkill.getSkillName(), employeeSkill.getSkillDescription(),employeeSkill.getEmployeeId().getEmployeeUserName(), employeeSkill.getSkillCategoryId().getSkillCategoryId(), employeeSkill.getDepartment().getDepartmentId())).toList();
     }
 
     public void removeSkill(Integer skillId) {

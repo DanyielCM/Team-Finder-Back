@@ -15,18 +15,9 @@ public class SkillsFromCategoryDTO {
     private Integer skillId;
     private String skillName;
     private String skillDescription;
-    @JsonIgnore
-    private Employees authorName;
-    @JsonIgnore
-    private SkillCategory skillCategoryId;
-    @JsonIgnore
-    private Department department;
+    private String authorName;
+    private Integer skillCategoryId;
+    private Long departmentId;
 
-    public SkillsFromCategoryDTO(Integer skillId, String skillName, String skillDescription, Employees employeeId, Department department) {
-        this.skillId = skillId;
-        this.skillName = skillName;
-        this.skillDescription = skillDescription;
-        this.authorName = employeeId;
-        this.department = department;
-    }
+
 }
