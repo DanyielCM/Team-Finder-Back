@@ -92,6 +92,16 @@ public class SkillController {
         }
     }
 
+    @GetMapping("/getSkillsByOrganization/{organizationId}")
+    public ResponseEntity getSkillsByOrganization(@PathVariable("organizationId") Integer organizationId){
+        try{
+            return ResponseEntity.status(200).body(skillsServices.getSkillsByOrganization(organizationId));
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body("Failed to get skills by organization " + e.getMessage());
+        }
+    }
+
     @DeleteMapping("/removeSkill/{skillId}")
     public ResponseEntity removeSkill(@PathVariable("skillId") Integer skillId) {
         try{

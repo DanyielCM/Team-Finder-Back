@@ -9,10 +9,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface EmployeeSkillsRepository extends JpaRepository<EmployeeSkills, Integer> {
     Optional<List<EmployeeSkills>> findAllByDepartmentAndSkillCategoryId(Department department, SkillCategory skillCategory);
     Optional<EmployeeSkills> findAllBySkillNameAndDepartment(String skillName, Department department);
+    Set<EmployeeSkills> findAllByDepartment(Department department);
 
 }

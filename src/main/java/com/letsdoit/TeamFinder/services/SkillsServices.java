@@ -1,5 +1,6 @@
 package com.letsdoit.TeamFinder.services;
 
+import com.letsdoit.TeamFinder.domain.DTO.SkillsFromCategoryDTO;
 import com.letsdoit.TeamFinder.domain.DTO.SkillsThatAUserHaveDTO;
 import com.letsdoit.TeamFinder.domain.Department;
 import com.letsdoit.TeamFinder.domain.Employees;
@@ -86,6 +87,15 @@ public class SkillsServices {
         Department department = departmentRepository.findById(departmentId).orElseThrow(() -> new InvalidInvocationException("Department not found"));
         SkillCategory skillCategory = skillCategoryRepository.findById(skillCategoryId).orElseThrow(() -> new InvalidInvocationException("Skill category not found"));
         return employeeSkillsRepository.findAllByDepartmentAndSkillCategoryId(department, skillCategory).orElseThrow(() -> new InvalidInvocationException("Skills not found"));
+    }
+
+    public List<SkillsFromCategoryDTO> getSkillsByOrganization(Integer organizationId) {
+        List<Department> departments = departmentRepository.findAllByOrganizationId(organizationRepository.findById(organizationId).orElseThrow(() -> new InvalidInvocationException("Organization not found")));
+        Set<EmployeeSkills> employeeSkills = new HashSet<EmployeeSkills>();
+        departments.forEach(department -> {
+            employeeSkills.addAll(employeeSkillsRepository.findAllByDepartment(department));
+        });
+        return employeeSkills.stream().map(employeeSkill -> new SkillsFromCategoryDTO(employeeSkill.getSkillId(), employeeSkill.getSkillName(), employeeSkill.getSkillDescription(),employeeSkill.getEmployeeId(), employeeSkill.getDepartment())).toList();
     }
 
     public void removeSkill(Integer skillId) {

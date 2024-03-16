@@ -39,11 +39,11 @@ public class AuthenticationController {
                     registrationDTO.getEmployeePassword(), "OrganizationAdmin");
             Employees adminId = employeeRepository.findByEmployeeEmail(registrationDTO.getEmployeeEmail().toLowerCase()).get();
             org.setOrgAdminId(adminId);
+            //TODO: change the URL to the actual server URL
             org.setEmployeeRegisterURL("http://localhost:8080/auth/employee/register?orgId=" + org.getOrganizationId());
             admin.setOrganization(org);
             employeeRepository.save(admin);
             organizationRepository.save(org);
-
             return ResponseEntity.ok(org);
         } catch (DataIntegrityViolationException e) {
             log.info("User " + registrationDTO.getEmployeeUserName() + " already exists");
