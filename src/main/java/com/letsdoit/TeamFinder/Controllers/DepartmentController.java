@@ -41,7 +41,7 @@ public class DepartmentController {
         }
         catch (Exception e){
             log.info(e.getMessage());
-            return ResponseEntity.status(500).body("Failed to create resource");
+            return ResponseEntity.status(500).body("Failed to create resource" + e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class DepartmentController {
             return ResponseEntity.status(200).body("Department manager changed successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to change department manager");
+            return ResponseEntity.status(500).body("Failed to change department manager" + e.getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ public class DepartmentController {
         }
         catch (Exception e){
             log.info(e.getMessage());
-            return ResponseEntity.status(500).body("Failed to remove employee from department");
+            return ResponseEntity.status(500).body("Failed to remove employee from department" + e.getMessage());
         }
     }
 
@@ -102,7 +102,7 @@ public class DepartmentController {
         }
         catch (Exception e){
             log.info(e.getMessage());
-            return ResponseEntity.status(500).body("Failed to get unassigned employees");
+            return ResponseEntity.status(500).body("Failed to get unassigned employees" + e.getMessage());
         }
     }
 
@@ -113,7 +113,7 @@ public class DepartmentController {
         }
         catch (Exception e){
             log.info(e.getMessage());
-            return ResponseEntity.status(500).body("Failed to get unassigned department managers");
+            return ResponseEntity.status(500).body("Failed to get unassigned department managers" + e.getMessage());
         }
     }
 
@@ -126,7 +126,7 @@ public class DepartmentController {
         }
         catch (Exception e){
             log.info(e.getMessage());
-            return ResponseEntity.status(500).body("Failed to assign employee to department");
+            return ResponseEntity.status(500).body("Failed to assign employee to department" + e.getMessage());
         }
     }
 
@@ -137,7 +137,7 @@ public class DepartmentController {
             return ResponseEntity.status(200).body("Department name updated successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to update department name");
+            return ResponseEntity.status(500).body("Failed to update department name" + e.getMessage());
         }
     }
 
@@ -148,7 +148,7 @@ public class DepartmentController {
             return ResponseEntity.status(200).body("Department description updated successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to update department description");
+            return ResponseEntity.status(500).body("Failed to update department description" + e.getMessage());
         }
     }
     // This method is used to delete a department
@@ -159,7 +159,7 @@ public class DepartmentController {
             return ResponseEntity.status(200).body("Resource deleted successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to delete resource");
+            return ResponseEntity.status(500).body("Failed to delete resource" + e.getMessage());
         }
     }
 

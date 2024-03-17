@@ -40,7 +40,7 @@ public class OrganizationController {
         }
         catch (Exception e){
             log.info(e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create resource");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to create resource" + e.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class OrganizationController {
             return ResponseEntity.status(HttpStatus.OK).body(organizationService.getOrganization(id));
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to get resource");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to get resource" + e.getMessage());
         }
     }
 
@@ -66,7 +66,7 @@ public class OrganizationController {
             return ResponseEntity.status(HttpStatus.OK).body("Resource deleted successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to delete resource");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Failed to delete resource" + e.getMessage());
         }
     }
 

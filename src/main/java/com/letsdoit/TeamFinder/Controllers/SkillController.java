@@ -33,7 +33,7 @@ public class SkillController {
             return ResponseEntity.status(200).body(skillsServices.getSkillCategories(organizationId));
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to get skill categories");
+            return ResponseEntity.status(500).body("Failed to get skill categories " + e.getMessage());
         }
     }
 
@@ -57,7 +57,7 @@ public class SkillController {
             return ResponseEntity.status(200).body("Skill category removed successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to remove skill category");
+            return ResponseEntity.status(500).body("Failed to remove skill category" + e.getMessage());
         }
     }
 
@@ -69,7 +69,7 @@ public class SkillController {
             return ResponseEntity.status(200).body("Skill category name updated successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to update skill category name");
+            return ResponseEntity.status(500).body("Failed to update skill category name" + e.getMessage());
         }
     }
 
@@ -118,7 +118,7 @@ public class SkillController {
             return ResponseEntity.status(200).body("Skill removed successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to remove skill");
+            return ResponseEntity.status(500).body("Failed to remove skill" + e.getMessage());
         }
     }
 
@@ -130,7 +130,7 @@ public class SkillController {
             return ResponseEntity.status(200).body("Skill updated successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to update skill");
+            return ResponseEntity.status(500).body("Failed to update skill" + e.getMessage());
         }
     }
 
@@ -159,7 +159,7 @@ public class SkillController {
             return ResponseEntity.status(200).body("User skill removed successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to remove user skill");
+            return ResponseEntity.status(500).body("Failed to remove user skill" + e.getMessage());
         }
     }
 
@@ -172,7 +172,7 @@ public class SkillController {
             return ResponseEntity.status(200).body(skillsThatAUserHaveDTO);
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to get user skills");
+            return ResponseEntity.status(500).body("Failed to get user skills" + e.getMessage());
         }
     }
 

@@ -45,7 +45,7 @@ public class EmployeeController {
             return ResponseEntity.status(200).body(role);
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to get role");
+            return ResponseEntity.status(500).body("Failed to get role"+ e.getMessage());
         }
     }
 
@@ -56,7 +56,7 @@ public class EmployeeController {
             return ResponseEntity.status(200).body(employeeServices.getEmployees(organization));
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to get employees");
+            return ResponseEntity.status(500).body("Failed to get employees" + e.getMessage());
         }
     }
 
@@ -67,7 +67,7 @@ public class EmployeeController {
             return ResponseEntity.status(200).body(employeeServices.getEmployeesByRole(organization, role));
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to get employees");
+            return ResponseEntity.status(500).body("Failed to get employees" + e.getMessage());
         }
     }
 
@@ -78,7 +78,7 @@ public class EmployeeController {
             return ResponseEntity.status(200).body("Role removed successfully");
         }
         catch (Exception e){
-            return ResponseEntity.status(500).body("Failed to remove role");
+            return ResponseEntity.status(500).body("Failed to remove role" + e.getMessage());
         }
     }
 
