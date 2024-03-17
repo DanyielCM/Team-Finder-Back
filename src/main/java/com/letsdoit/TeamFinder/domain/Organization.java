@@ -52,7 +52,24 @@ public Employees setOrgAdminId(Employees orgAdminId)
         this.organizationName = organizationName;
         this.hqAddress = hqAddress;
         this.orgAdminId = orgAdminId;
-        this.EmployeeRegisterURL = "http://localhost:8080/employee/register?organizationUserName=" + organizationName.replaceAll(" ","");
+    }
+
+    @Override
+    public String toString() {
+        return "Organization{" +
+                "organizationId=" + organizationId +
+                ", organizationName='" + organizationName + '\'' +
+                ", hqAddress='" + hqAddress + '\'' +
+                ", orgAdminId=" + orgAdminId.getEmployeeId() +
+                ", EmployeeRegisterURL='" + EmployeeRegisterURL + '\'' +
+                ", logo='" + logo + '\'' +
+                '}';
+    }
+
+    @Override
+    public int hashCode() {
+        return  organizationId.hashCode() + organizationName.hashCode() + hqAddress.hashCode() + EmployeeRegisterURL.hashCode();
+
     }
 
 

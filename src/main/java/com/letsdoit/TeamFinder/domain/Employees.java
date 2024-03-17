@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Data
@@ -26,10 +27,10 @@ public class Employees implements UserDetails {
     private String employeeUserName;
     @Column(unique = true)
     private String employeeEmail;
+    @JsonIgnore
     private String employeePassword;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organization_id")
-    @JsonIgnore
     private Organization organization;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -39,6 +40,34 @@ public class Employees implements UserDetails {
     )
     private Set<Role> authorities;
     private Integer projecthours;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name="employees_department_junction",
+        joinColumns = @JoinColumn(name = "employee_id"),
+        inverseJoinColumns = @JoinColumn(name = "department_id")
+    )
+    private Set<Department> departments;
+
+
+    @Override
+    public String toString() {
+        return "Employees{" +
+                "employeeId=" + employeeId +
+                ", employeeUserName='" + employeeUserName + '\'' +
+                ", employeeEmail='" + employeeEmail + '\'' +
+                ", employeePassword='" + employeePassword + '\'' +
+                ", organization=" + organization +
+                ", authorities=" + authorities +
+                ", projecthours=" + projecthours +
+                '}';
+    }
+
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(employeeId, employeeUserName, employeeEmail, employeePassword, organization, authorities, projecthours);
+    }
 
     public Employees(String employeeUserName, String employeePassword, String employeeEmail, Set<Role> authorities) {
         this.employeeUserName = employeeUserName;
@@ -57,39 +86,39 @@ public class Employees implements UserDetails {
         this.projecthours=0;
     }
 
-    public Employees(String email) {
-        this.employeeEmail = email;
+
+    @JsonIgnore
+    public Set<Department> getDepartments() {
+        return this.departments;
     }
 
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
-    }
-
+    @JsonIgnore
     @Override
     public String getPassword() {
         return this.employeePassword;
     }
-
+    @JsonIgnore
     @Override
     public String getUsername() {
         return this.employeeUserName;
     }
 
+    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
+    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;

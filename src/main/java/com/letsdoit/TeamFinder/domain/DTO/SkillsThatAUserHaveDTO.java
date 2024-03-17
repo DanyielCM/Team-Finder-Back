@@ -1,17 +1,15 @@
-/*
 package com.letsdoit.TeamFinder.domain.DTO;
 
-import com.letsdoit.TeamFinder.domain.Organization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponseDTO {
-    private Organization organization;
-    private String jwt;
-
+public class SkillsThatAUserHaveDTO {
+    private Integer userSkillId;
+    private String skills;
 }
-*/

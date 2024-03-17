@@ -9,7 +9,12 @@ import com.letsdoit.TeamFinder.services.AuthenticationService;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpResponse;
 
 @RestController
 @Log
@@ -25,44 +30,44 @@ public class AuthenticationController {
     private EmployeeRepository employeeRepository;
 
 
-
-    //TODO: adauga restul de campuri din Organization
     @PostMapping("/register")
-    public Organization registerOrganization(@RequestBody RegistrationDTO registrationDTO)
-    {
-
-        try{
-            organizationRepository.findByOrganizationName(registrationDTO.getOrganizationName()).ifPresent(org -> {
-                throw new DataIntegrityViolationException("Organization already exists");
-            });
-            employeeRepository.findByEmployeeEmail(registrationDTO.getEmployeeEmail().toLowerCase()).ifPresent(emp -> {
-                throw new DataIntegrityViolationException("Employee already exists");
-            });
-
-             Organization org = authenticationService.registerOrganization(registrationDTO.getOrganizationName(),
+    public ResponseEntity<?> registerOrganization(@RequestBody RegistrationDTO registrationDTO) {
+        try {
+            Organization org = authenticationService.registerOrganization(registrationDTO.getOrganizationName(),
                     registrationDTO.getHqAddress(), null);
             Employees admin = authenticationService.registerEmployee(registrationDTO.getEmployeeUserName(), registrationDTO.getEmployeeEmail().toLowerCase(),
-                    registrationDTO.getEmployeePassword(),"OrganizationAdmin");
+                    registrationDTO.getEmployeePassword(), "OrganizationAdmin");
             Employees adminId = employeeRepository.findByEmployeeEmail(registrationDTO.getEmployeeEmail().toLowerCase()).get();
             org.setOrgAdminId(adminId);
-            org.setEmployeeRegisterURL("http://localhost:8080/auth/employee/register?orgId="+org.getOrganizationId());
+            //TODO: change the URL to the actual server URL
+            org.setEmployeeRegisterURL("http://localhost:8080/auth/employee/register?orgId=" + org.getOrganizationId());
             admin.setOrganization(org);
             employeeRepository.save(admin);
             organizationRepository.save(org);
-            return org;
-        }
-        catch (DataIntegrityViolationException e)
-        {
+            return ResponseEntity.ok(org);
+        } catch (DataIntegrityViolationException e) {
             log.info("User " + registrationDTO.getEmployeeUserName() + " already exists");
-            return null;
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // return httpStatus 409 Conflict
         }
     }
 
-    @PostMapping("/login")
-    public EmployeeLoginResponseDTO login(@RequestBody LoginEmployeeDTO loginDTO)  {
 
-        return authenticationService.loginEmployee(loginDTO.getEmployeeEmail().toLowerCase(), loginDTO.getEmployeePassword());
+    /* @PostMapping("/login")
+     public EmployeeLoginResponseDTO login(@RequestBody LoginEmployeeDTO loginDTO)  {
+
+         return authenticationService.loginEmployee(loginDTO.getEmployeeEmail().toLowerCase(), loginDTO.getEmployeePassword());
+     }*/
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginEmployeeDTO loginDTO) {
+        if (employeeRepository.findByEmployeeEmail(loginDTO.getEmployeeEmail().toLowerCase()).isEmpty())
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        EmployeeLoginResponseDTO responseDTO = authenticationService.loginEmployee(loginDTO.getEmployeeEmail().toLowerCase(), loginDTO.getEmployeePassword());
+        if (responseDTO.getEmployee() == null)
+            return ResponseEntity.status(401).build();
+        else return ResponseEntity.ok(responseDTO);
     }
+
+
 
    /* @PostMapping("/employee/login")
     public EmployeeLoginResponseDTO loginEmployee(@RequestBody LoginEmployeeDTO loginDTO)  {
@@ -70,16 +75,15 @@ public class AuthenticationController {
         return authenticationService.loginEmployee(loginDTO.getEmployeeEmail().toLowerCase(), loginDTO.getEmployeePassword());
     }*/
 
+
     @PostMapping("/employee/register")
-    public Employees registerEmployee(@RequestParam Integer orgId, @RequestBody RegistrationEmployeeDTO registerEmployeeDTO)
-    {
-        try{
-            return authenticationService.registerEmployee(registerEmployeeDTO.getEmployeeUserName(), registerEmployeeDTO.getEmployeeEmail().toLowerCase(), registerEmployeeDTO.getEmployeePassword(), orgId);
-        }
-        catch (DataIntegrityViolationException e)
-        {
+    public ResponseEntity<?> registerEmployee(@RequestParam Integer orgId, @RequestBody RegistrationEmployeeDTO registerEmployeeDTO) {
+        try {
+            Employees registeredEmployee = authenticationService.registerEmployee(registerEmployeeDTO.getEmployeeUserName(), registerEmployeeDTO.getEmployeeEmail().toLowerCase(), registerEmployeeDTO.getEmployeePassword(), orgId);
+            return ResponseEntity.ok(registeredEmployee);
+        } catch (DataIntegrityViolationException e) {
             log.info("User " + registerEmployeeDTO.getEmployeeEmail() + " already exists");
-            return null;
+            return ResponseEntity.status(HttpStatus.CONFLICT).build(); // return httpStatus 409 Conflict
         }
     }
 
