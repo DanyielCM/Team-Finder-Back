@@ -50,7 +50,7 @@ public class SkillsServices {
     }
 
     public List<SkillCategory> getSkillCategories(Integer organizationId) {
-        return skillCategoryRepository.findAllByOrganizationIdOrSkillCategoryNameNotNull(organizationRepository.findById(organizationId).orElseThrow(() -> new InvalidInvocationException("Organization not found")));
+        return skillCategoryRepository.findAllByOrganizationIdAndSkillCategoryNameNotNull(organizationRepository.findById(organizationId).orElseThrow(() -> new InvalidInvocationException("Organization not found")));
     }
 
     public void removeSkillCategory(Integer skillCategoryId) {

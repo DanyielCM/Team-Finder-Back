@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.oauth2.login.OAuth2LoginSecurityMarker;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +44,11 @@ public class TeamFinderApplication {
 	@Bean
 	CommandLineRunner run(SkillCategoryRepository skillCategoryRepository, RoleRepository roleRepository, OrganizationRepository organizationRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
+
+			String uri = "https://zenquotes.io/api/today";
+			RestTemplate restTemplate = new RestTemplate();
+			String result = restTemplate.getForObject(uri, String.class);
+			log.info("Quote of the day: " + result);
 
 			/*Organization org = organizationRepository.findById(602).get();
 			Set<Role> roles = roleRepository.findByAuthority("DepartmentManager").map(Set::of).get();

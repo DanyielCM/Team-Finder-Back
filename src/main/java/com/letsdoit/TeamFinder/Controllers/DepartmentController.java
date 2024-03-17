@@ -10,8 +10,11 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -93,13 +96,24 @@ public class DepartmentController {
     }
 
     @GetMapping("/getUnassignedEmployees")
-    public ResponseEntity getUnassignedEmployees(@RequestParam Integer orgId){
+    public ResponseEntity getUnassignedEmployees(@RequestParam Integer orgId, Principal principal){
         try{
-            return ResponseEntity.status(200).body(departmentServices.getUnassignedEmployees(orgId));
+            return ResponseEntity.status(200).body(departmentServices.getUnassignedEmployees(orgId, principal.getName()));
         }
         catch (Exception e){
             log.info(e.getMessage());
             return ResponseEntity.status(500).body("Failed to get unassigned employees");
+        }
+    }
+
+    @GetMapping("/getUnassignedDepartmentManagers")
+    public ResponseEntity getUnassignedDepartmentManagers(@RequestParam Integer orgId){
+        try{
+            return ResponseEntity.status(200).body(departmentServices.getUnassignedDepartmentManagers(orgId));
+        }
+        catch (Exception e){
+            log.info(e.getMessage());
+            return ResponseEntity.status(500).body("Failed to get unassigned department managers");
         }
     }
 

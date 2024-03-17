@@ -1,5 +1,6 @@
 package com.letsdoit.TeamFinder.services;
 
+import com.letsdoit.TeamFinder.domain.DTO.EmployeeDTO;
 import com.letsdoit.TeamFinder.domain.Department;
 import com.letsdoit.TeamFinder.domain.Employees;
 import com.letsdoit.TeamFinder.domain.Organization;
@@ -7,6 +8,7 @@ import com.letsdoit.TeamFinder.repositories.DepartmentRepository;
 import com.letsdoit.TeamFinder.repositories.EmployeeRepository;
 import com.letsdoit.TeamFinder.repositories.OrganizationRepository;
 import com.letsdoit.TeamFinder.repositories.RoleRepository;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Service
+@Log
 public class DepartmentServices {
     // This class is a service that will be used to interact with the database
     private final DepartmentRepository departmentRepository;
@@ -66,16 +69,35 @@ public class DepartmentServices {
         departmentRepository.save(department);
     }
 
-    public List<Employees> getUnassignedEmployees(Integer orgId){
+    public List<Employees> getUnassignedEmployees(Integer orgId, String self){
         try{
+            Employees employee = employeeRepository.findByEmployeeUserName(self).orElseThrow(()-> {throw new IllegalStateException("Employee with username " + self + " does not exist");});
             Organization organization = organizationRepository.findById(orgId).orElseThrow(()-> {throw new IllegalStateException("Organization with id " + orgId + " does not exist");});
-            return employeeRepository.findAllByOrganizationAndDepartmentsEmptyAndAuthoritiesNotContaining(organization, roleRepository.findByAuthority("OrganizationAdmin").get());
+            List<Employees> employees = employeeRepository.findAllByOrganizationAndDepartmentsEmptyAndAuthoritiesNotContaining(organization, roleRepository.findByAuthority("OrganizationAdmin").get());
+            employees.remove(employee);
+            return employees;
         }
         catch (Exception e){
 
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+    public List<EmployeeDTO> getUnassignedDepartmentManagers(Integer orgId)
+    {
+        try{
+            Organization organization = organizationRepository.findById(orgId).orElseThrow(()-> {throw new IllegalStateException("Organization with id " + orgId + " does not exist");});
+            List<Employees> assignedDepartmentManagers = departmentRepository.findAllByOrganizationId(organization).stream().map(Department::getDepartmentManager).toList();
+            List<Employees> allDepartmentManagers = employeeRepository.findAllByOrganizationAndAuthoritiesContainingAndAuthoritiesIsNotContaining(organization, roleRepository.findByAuthority("DepartmentManager").get(), roleRepository.findByAuthority("OrganizationAdmin").get());
+            List<Employees> unassignedDepartmentManagers = allDepartmentManagers.stream().filter(depManager -> !assignedDepartmentManagers.contains(depManager)).toList();
+            List<EmployeeDTO> employeesDTO = unassignedDepartmentManagers.stream().map(employee -> new EmployeeDTO(employee.getEmployeeId(), employee.getEmployeeUserName(), employee.getEmployeeEmail(), employee.getOrganization().getOrganizationId(), employee.getProjecthours())).toList();
+            return employeesDTO;
+        }
+        catch (Exception e){
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+
     public void assignEmployeeToDepartment(Integer employeeId, Integer departmentId){
         try{
             Employees employee = employeeRepository.findById(employeeId).orElseThrow(()-> {throw new IllegalStateException("Employee with id " + employeeId + " does not exist");});

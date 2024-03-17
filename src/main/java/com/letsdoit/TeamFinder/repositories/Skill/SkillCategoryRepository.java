@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface SkillCategoryRepository extends JpaRepository<SkillCategory, Integer> {
     Optional<SkillCategory> findBySkillCategoryName(String skillCategoryName);
-    List<SkillCategory> findAllByOrganizationIdOrSkillCategoryNameNotNull(Organization organizationId);
+    List<SkillCategory> findAllByOrganizationIdAndSkillCategoryNameNotNull(Organization organizationId);
     Optional<SkillCategory> findBySkillCategoryNameAndOrganizationId(String skillCategoryName, Organization organizationId);
 }

@@ -9,6 +9,7 @@ import com.letsdoit.TeamFinder.repositories.Skill.SkillCategoryRepository;
 import com.letsdoit.TeamFinder.services.SkillsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -25,6 +26,7 @@ public class SkillController {
         this.skillsServices = skillsServices;
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/getSkillCategories/{organizationId}")
     public ResponseEntity getSkillCategories(@PathVariable("organizationId") Integer organizationId) {
         try{
@@ -35,6 +37,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('OrganizationAdmin', 'DepartmentManager')")
     @PostMapping("/addSkillCategory/{skillCategoryName}/{organizationId}")
     public ResponseEntity addSkillCategory(@PathVariable("skillCategoryName") String skillCategoryName, @PathVariable("organizationId") Integer organizationId) {
         try{
@@ -46,6 +49,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('OrganizationAdmin', 'DepartmentManager')")
     @DeleteMapping("/removeSkillCategory/{skillCategoryId}")
     public ResponseEntity removeSkillCategory(@PathVariable("skillCategoryId") Integer skillCategoryId) {
         try{
@@ -57,6 +61,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('OrganizationAdmin', 'DepartmentManager')")
     @PostMapping("/updateSkillCategoryName/{skillCategoryId}/{newSkillCategoryName}")
     public ResponseEntity updateSkillCategoryName(@PathVariable("skillCategoryId") Integer skillCategoryId, @PathVariable("newSkillCategoryName") String newSkillCategoryName) {
         try{
@@ -68,6 +73,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('OrganizationAdmin', 'DepartmentManager')")
     @PostMapping("/addSkillsToCategory/{skillName}/{skillDescription}/{employeeId}/{skillCategoryId}/{departmentId}")
     public ResponseEntity addSkillsToCategory(@PathVariable("skillName") String skillName, @PathVariable("skillDescription") String skillDescription, @PathVariable("employeeId") Integer employeeId, @PathVariable("skillCategoryId") Integer skillCategoryId, @PathVariable("departmentId") Integer departmentId){
         try{
@@ -82,6 +88,7 @@ public class SkillController {
     //TODO: ADD DTOs
 
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/getSkillsByDepartmentAndCategory/{departmentId}/{skillCategoryId}")
     public ResponseEntity getSkillsByDepartment(@PathVariable("departmentId") Integer departmentId, @PathVariable("skillCategoryId") Integer skillCategoryId){
         try{
@@ -92,6 +99,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/getSkillsByOrganization/{organizationId}")
     public ResponseEntity getSkillsByOrganization(@PathVariable("organizationId") Integer organizationId){
         try{
@@ -102,6 +110,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('OrganizationAdmin', 'DepartmentManager')")
     @DeleteMapping("/removeSkill/{skillId}")
     public ResponseEntity removeSkill(@PathVariable("skillId") Integer skillId) {
         try{
@@ -113,6 +122,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("hasAnyRole('OrganizationAdmin', 'DepartmentManager')")
     @PostMapping("/updateSkill/{skillId}/{newSkillName}/{newSkillDescription}")
     public ResponseEntity updateSkill(@PathVariable("skillId") Integer skillId, @PathVariable("newSkillName") String newSkillName, @PathVariable("newSkillDescription") String newSkillDescription) {
         try{
@@ -127,6 +137,7 @@ public class SkillController {
     //---------------------------User Skills---------------------------
 
 
+    @PreAuthorize("permitAll()")
     @PostMapping("/addUserSkills/{employeeId}/{skillId}/{proficiencyLevel}/{experience}")
     public ResponseEntity addUserSkills(@PathVariable("employeeId") Integer employeeId, @PathVariable("skillId") Integer skillId, @PathVariable("proficiencyLevel") Integer proficiencyLevel, @PathVariable("experience") String experience) {
         try{
@@ -140,6 +151,7 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("permitAll()")
     @DeleteMapping("/removeUserSkill/{userSkillId}")
     public ResponseEntity removeUserSkill(@PathVariable("userSkillId") Integer userSkillId) {
         try{
@@ -151,10 +163,11 @@ public class SkillController {
         }
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/getUserSkills/{employeeId}")
     public ResponseEntity getUserSkills(@PathVariable("employeeId") Integer employeeId) {
         try{
-            Set<SkillsThatAUserHaveDTO> skillsThatAUserHaveDTO = new HashSet<>();
+            Set<SkillsThatAUserHaveDTO> skillsThatAUserHaveDTO;
             skillsThatAUserHaveDTO = skillsServices.getSkillsByEmployee(employeeId);
             return ResponseEntity.status(200).body(skillsThatAUserHaveDTO);
         }

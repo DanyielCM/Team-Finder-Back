@@ -20,4 +20,6 @@ public interface EmployeeRepository extends JpaRepository<Employees, Integer> {
     List<Employees> findAllByOrganizationAndDepartmentsEmptyAndAuthoritiesNotContaining(Organization organization, Role role);
     List<Employees> findAllByOrganizationAndAuthorities(Organization organization, Set<Role> role);
     List<Employees> findAllByDepartments(Department departmentId);
+
+    List<Employees> findAllByOrganizationAndAuthoritiesContainingAndAuthoritiesIsNotContaining(Organization organization, Role role, Role role1);
 }
