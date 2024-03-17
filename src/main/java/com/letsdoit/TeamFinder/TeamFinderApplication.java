@@ -45,15 +45,7 @@ public class TeamFinderApplication {
 	CommandLineRunner run(SkillCategoryRepository skillCategoryRepository, RoleRepository roleRepository, OrganizationRepository organizationRepository, PasswordEncoder passwordEncoder) {
 		return args -> {
 
-			String uri = "https://zenquotes.io/api/today";
-			RestTemplate restTemplate = new RestTemplate();
-			String result = restTemplate.getForObject(uri, String.class);
-			log.info("Quote of the day: " + result);
 
-			/*Organization org = organizationRepository.findById(602).get();
-			Set<Role> roles = roleRepository.findByAuthority("DepartmentManager").map(Set::of).get();
-			List<Employees> employees = employeeRep.findAllByOrganizationAndAuthorities(org, roles);
-			log.info("Employees: " + employees);*/
 
 			SkillCategory skill = skillCategoryRepository.findBySkillCategoryName("Programming Language").orElseGet(() -> {
 				SkillCategory skillCategory = new SkillCategory();
