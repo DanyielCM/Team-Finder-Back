@@ -54,6 +54,11 @@ public class SkillsServices {
     }
 
     public void removeSkillCategory(Integer skillCategoryId) {
+        Set<EmployeeSkills> employeeSkills = employeeSkillsRepository.findAllBySkillCategoryId(skillCategoryRepository.findById(skillCategoryId).orElseThrow(() -> new InvalidInvocationException("Skill category not found")));
+        employeeSkills.forEach(employeeSkill -> {
+            userSkillsRepository.deleteAllBySkillId(employeeSkill);
+            employeeSkillsRepository.delete(employeeSkill);
+        });
         skillCategoryRepository.deleteById(skillCategoryId);
     }
 

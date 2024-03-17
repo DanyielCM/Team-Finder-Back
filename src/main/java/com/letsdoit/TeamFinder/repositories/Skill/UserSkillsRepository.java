@@ -16,5 +16,6 @@ public interface UserSkillsRepository extends JpaRepository<UserSkills, Integer>
     Optional<UserSkills> findByEmployeeId(Employees employeeId);
     Optional<List<UserSkills>> findAllByEmployeeId(Employees employeeId);
     Optional<UserSkills> findBySkillId(EmployeeSkills skillId);
+    void deleteAllBySkillId(EmployeeSkills skillId);
 
 }

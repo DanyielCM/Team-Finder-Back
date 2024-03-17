@@ -16,5 +16,6 @@ public interface EmployeeSkillsRepository extends JpaRepository<EmployeeSkills, 
     Optional<List<EmployeeSkills>> findAllByDepartmentAndSkillCategoryId(Department department, SkillCategory skillCategory);
     Optional<EmployeeSkills> findAllBySkillNameAndDepartment(String skillName, Department department);
     Set<EmployeeSkills> findAllByDepartment(Department department);
+    Set<EmployeeSkills> findAllBySkillCategoryId(SkillCategory skillCategory);
 
 }
