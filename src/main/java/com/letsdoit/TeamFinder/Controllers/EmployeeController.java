@@ -15,7 +15,6 @@ import java.util.Set;
 
 @Log
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api/employee")
 public class EmployeeController {
 

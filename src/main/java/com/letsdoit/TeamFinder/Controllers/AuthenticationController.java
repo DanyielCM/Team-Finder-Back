@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
 
-@CrossOrigin(origins = "*")
 @RestController
 @Log
 @RequestMapping("/auth")
@@ -62,8 +61,9 @@ public class AuthenticationController {
         if (employeeRepository.findByEmployeeEmail(loginDTO.getEmployeeEmail().toLowerCase()).isEmpty())
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         EmployeeLoginResponseDTO responseDTO = authenticationService.loginEmployee(loginDTO.getEmployeeEmail().toLowerCase(), loginDTO.getEmployeePassword());
-        if (responseDTO.getEmployee() == null)
+        if (responseDTO.getEmployee() == null){
             return ResponseEntity.status(401).build();
+        }
         else return ResponseEntity.ok(responseDTO);
     }
 
