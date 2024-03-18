@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.http.HttpResponse;
 
+@CrossOrigin(origins = "*")
 @RestController
 @Log
 @RequestMapping("/auth")

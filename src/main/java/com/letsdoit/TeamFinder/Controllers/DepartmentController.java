@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 @Log
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class DepartmentController {
 

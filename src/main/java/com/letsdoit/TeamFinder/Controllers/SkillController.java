@@ -16,6 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/skills")
 public class SkillController {

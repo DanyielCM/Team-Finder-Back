@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.letsdoit.TeamFinder.services.OrganizationService;
 
 @Log
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api")
 public class OrganizationController {
