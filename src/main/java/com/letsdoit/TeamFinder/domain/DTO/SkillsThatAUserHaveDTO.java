@@ -12,4 +12,6 @@ import java.util.Set;
 public class SkillsThatAUserHaveDTO {
     private Integer userSkillId;
     private String skills;
+    private Integer proficiencyLevel;
+    private String experience;
 }

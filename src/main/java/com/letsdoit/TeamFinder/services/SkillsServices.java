@@ -115,8 +115,6 @@ public class SkillsServices {
     }
 
     public void addUserSkills(Integer employeeId, Integer skillId, Integer proficiencyLevel, String experience) {
-        if(userSkillsRepository.findBySkillId(employeeSkillsRepository.findById(skillId).orElseThrow(() -> new InvalidInvocationException("Skill not found"))).isPresent())
-            throw new InvalidInvocationException("Skill already exists");
         Employees employee = employees.findById(employeeId).orElseThrow(() -> new InvalidInvocationException("Employee not found"));
         EmployeeSkills skill = employeeSkillsRepository.findById(skillId).orElseThrow(() -> new InvalidInvocationException("Skill not found"));
         userSkillsRepository.save(new UserSkills(employee, skill, proficiencyLevel, experience));
@@ -131,7 +129,7 @@ public class SkillsServices {
         Set<SkillsThatAUserHaveDTO> skills = new HashSet<>();
         userSkillsRepository.findAllByEmployeeId(employee).ifPresent(userSkills -> {
             userSkills.forEach(userSkill -> {
-                skills.add(new SkillsThatAUserHaveDTO(userSkill.getUserSkillId(), userSkill.getSkillId().getSkillName()));
+                skills.add(new SkillsThatAUserHaveDTO(userSkill.getUserSkillId(), userSkill.getSkillId().getSkillName(), userSkill.getProficiencyLevel(), userSkill.getExperience()));
             });
         });
         return skills;

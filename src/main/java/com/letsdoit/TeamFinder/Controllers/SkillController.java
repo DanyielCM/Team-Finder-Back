@@ -73,7 +73,7 @@ public class SkillController {
             return ResponseEntity.status(500).body("Failed to update skill category name" + e.getMessage());
         }
     }
-
+//----------------------
     @PreAuthorize("hasAnyRole('OrganizationAdmin', 'DepartmentManager')")
     @PostMapping("/addSkillsToCategory/{skillName}/{skillDescription}/{employeeId}/{skillCategoryId}/{departmentId}")
     public ResponseEntity addSkillsToCategory(@PathVariable("skillName") String skillName, @PathVariable("skillDescription") String skillDescription, @PathVariable("employeeId") Integer employeeId, @PathVariable("skillCategoryId") Integer skillCategoryId, @PathVariable("departmentId") Integer departmentId){
@@ -87,7 +87,6 @@ public class SkillController {
     }
 
     //TODO: ADD DTOs
-
 
     @PreAuthorize("permitAll()")
     @GetMapping("/getSkillsByDepartmentAndCategory/{departmentId}/{skillCategoryId}")
