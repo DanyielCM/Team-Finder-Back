@@ -39,7 +39,7 @@ public class ProjectServices {
 
     public void createProject(ProjectDTO project, Principal principal) {
         try {
-                Project newProject = new Project(project.getName(), project.getStatus(), project.getStartDate(), project.getEndDate(), employeeRepository.findByEmployeeUserName(principal.getName()).get());
+                Project newProject = new Project(project.getName(), project.getStatus(), project.getStartDate(), project.getEndDate(),project.getProjectPeriod(), employeeRepository.findByEmployeeUserName(principal.getName()).get());
                 projectRepository.save(newProject);
         } catch (Exception e) {
             log.info(e.getMessage());

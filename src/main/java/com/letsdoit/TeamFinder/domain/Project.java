@@ -43,11 +43,12 @@ public class Project {
 
 
 
-    public Project(String name, String status, Date startDate, Date endDate, Employees projectManager) {
+    public Project(String name, String status, Date startDate, Date endDate,String projectPeriod, Employees projectManager) {
         this.name = name;
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.projectPeriod = projectPeriod;
         this.projectManager = projectManager;
     }
     public Project(String name, String status, Date startDate, Date endDate) {
