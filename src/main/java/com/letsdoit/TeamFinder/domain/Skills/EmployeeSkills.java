@@ -19,6 +19,7 @@ import java.util.Set;
 public class EmployeeSkills {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "skill_id")
     private Integer skillId;
     private String skillName;
     private String skillDescription;
