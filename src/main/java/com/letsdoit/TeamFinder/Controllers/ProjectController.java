@@ -28,7 +28,7 @@ public class ProjectController {
     public ResponseEntity createProject(@RequestBody ProjectDTO project, Principal principal) {
         try {
             projectServices.createProject(project, principal);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Project created");
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -39,7 +39,7 @@ public class ProjectController {
         try {
 
             projectServices.addTechStack(projectID, techStackID);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Tech stack added to project");
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -49,7 +49,7 @@ public class ProjectController {
     public ResponseEntity deleteProject(@RequestParam Integer projectID) {
         try {
             projectServices.deleteProject(projectID);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Project deleted");
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
@@ -59,6 +59,35 @@ public class ProjectController {
     public ResponseEntity findMembers(@RequestParam Integer projectID) {
         try {
             return ResponseEntity.ok(projectServices.findMembers(projectID));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/addMember")
+    public ResponseEntity addMember(@RequestParam Integer projectID, @RequestParam Integer employeeID) {
+        try {
+            projectServices.addMember(projectID, employeeID);
+            return ResponseEntity.ok().body("Member added to project");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/removeMember")
+    public ResponseEntity deleteMember(@RequestParam Integer projectID, @RequestParam Integer employeeID) {
+        try {
+            projectServices.deleteMember(projectID, employeeID);
+            return ResponseEntity.ok().body("Member removed from project");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/getProjects")
+    public ResponseEntity getProject(Principal principal) {
+        try {
+            return ResponseEntity.ok(projectServices.getProject(principal.getName()));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

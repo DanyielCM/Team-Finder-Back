@@ -74,4 +74,32 @@ public class ProjectServices {
 
         return members;
     }
+
+    public void addMember(Integer projectID, Integer employeeID) {
+        Project project = projectRepository.findById(projectID).
+                orElseThrow(() -> new IllegalArgumentException("Invalid project ID"));
+        Employees employee = employeeRepository.findById(employeeID).
+                orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
+        project.getEmployees().add(employee);
+        projectRepository.save(project);
     }
+
+    public void deleteMember(Integer projectID, Integer employeeID) {
+        Project project = projectRepository.findById(projectID).
+                orElseThrow(() -> new IllegalArgumentException("Invalid project ID"));
+        Employees employee = employeeRepository.findById(employeeID).
+                orElseThrow(() -> new IllegalArgumentException("Invalid employee ID"));
+        project.getEmployees().remove(employee);
+        projectRepository.save(project);
+    }
+
+    public Set<ProjectDTO> getProject(String projectManager) {
+        Set<Project> projects = projectRepository.findAllByProjectManager(employeeRepository.findByEmployeeUserName(projectManager).get()).get();
+        Set<ProjectDTO> projectDTO = new HashSet<>();
+        for(Project project : projects){
+            projectDTO.add(new ProjectDTO(project.getProjectID(), project.getName(), project.getStatus(), project.getStartDate(), project.getEndDate(), project.getProjectPeriod(), project.getProjectManager().getEmployeeId()));
+        }
+        return projectDTO;
+    }
+
+}
