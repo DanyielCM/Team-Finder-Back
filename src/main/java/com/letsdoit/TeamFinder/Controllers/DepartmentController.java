@@ -59,14 +59,14 @@ public class DepartmentController {
     }
 
     @GetMapping("/getEmployeesFromDepartment/{departmentId}")
-    public ResponseEntity<List<EmployeeDTO>> getEmployeesFromDepartment(@PathVariable("departmentId") Integer departmentId) {
+    public ResponseEntity getEmployeesFromDepartment(@PathVariable("departmentId") Integer departmentId) {
         try{
             List<Employees> employees = departmentServices.getEmployeesFromDepartment(departmentId);
             List<EmployeeDTO> employeesDTO = employees.stream().map(employee -> new EmployeeDTO(employee.getEmployeeId(), employee.getEmployeeUserName(), employee.getEmployeeEmail(), employee.getOrganization().getOrganizationId(), employee.getProjecthours())).toList();
-            return new ResponseEntity<>(employeesDTO, HttpStatus.OK);
+            return ResponseEntity.status(200).body(employeesDTO);
         }
         catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.status(500).body("Failed to get employees from department" + e.getMessage());
         }
     }
 
