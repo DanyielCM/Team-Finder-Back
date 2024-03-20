@@ -1,6 +1,5 @@
 package com.letsdoit.TeamFinder.services;
 
-import com.letsdoit.TeamFinder.domain.DTO.EmployeeDTO;
 import com.letsdoit.TeamFinder.domain.DTO.ProjectDTO;
 import com.letsdoit.TeamFinder.domain.DTO.ProjectMemberDTO;
 import com.letsdoit.TeamFinder.domain.Employees;
@@ -98,18 +97,9 @@ public class ProjectServices {
         Set<Project> projects = projectRepository.findAllByProjectManager(employeeRepository.findByEmployeeUserName(projectManager).get()).get();
         Set<ProjectDTO> projectDTO = new HashSet<>();
         for(Project project : projects){
-            projectDTO.add(new ProjectDTO(project.getProjectID(), project.getName(), project.getStatus(), project.getStartDate(), project.getEndDate(), project.getProjectPeriod(), project.getProjectManager().getEmployeeId(), project.getEmployeeSkills().stream().map(EmployeeSkills::getSkillName).collect(Collectors.toSet())));
+            projectDTO.add(new ProjectDTO(project.getProjectID(), project.getName(), project.getStatus(), project.getStartDate(), project.getEndDate(), project.getProjectPeriod(), project.getProjectManager().getEmployeeId()));
         }
         return projectDTO;
-    }
-
-    public Set<EmployeeDTO> getEmployees(Integer projectID) {
-        Set<Employees> employees = projectRepository.findById(projectID).get().getEmployees();
-        Set<EmployeeDTO> employeeDTO = new HashSet<>();
-        for(Employees employee : employees){
-            employeeDTO.add(new EmployeeDTO(employee.getEmployeeId(), employee.getEmployeeUserName(), employee.getEmployeeEmail(), employee.getOrganization().getOrganizationId(), employee.getProjecthours()));
-        }
-        return employeeDTO;
     }
 
 }

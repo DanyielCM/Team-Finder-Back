@@ -92,13 +92,4 @@ public class ProjectController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
-    @GetMapping("/getEmployees")
-    public ResponseEntity getEmployees(@RequestParam Integer projectID) {
-        try {
-            return ResponseEntity.ok(projectServices.getEmployees(projectID));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 }

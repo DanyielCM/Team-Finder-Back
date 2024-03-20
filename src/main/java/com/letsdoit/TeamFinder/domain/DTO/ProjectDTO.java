@@ -21,6 +21,5 @@ public class ProjectDTO {
     private Date endDate;
     private String projectPeriod;
     private Integer projectManager;
-    private Set<String> techStack;
 
 }
