@@ -39,7 +39,7 @@ public class AuthenticationController {
                     registrationDTO.getEmployeePassword(), "OrganizationAdmin");
             Employees adminId = employeeRepository.findByEmployeeEmail(registrationDTO.getEmployeeEmail().toLowerCase()).get();
             org.setOrgAdminId(adminId);
-            org.setEmployeeRegisterURL("http://atc-2024-letsdoit-be-linux-web-app.azurewebsites.net/auth/employee/register?orgId=" + org.getOrganizationId());
+            org.setEmployeeRegisterURL("http://localhost:8080/auth/employee/register?orgId=" + org.getOrganizationId());
             admin.setOrganization(org);
             employeeRepository.save(admin);
             organizationRepository.save(org);
