@@ -14,7 +14,7 @@ import java.security.Principal;
 
 @RestController
 @Log
-@PreAuthorize("permitAll()")
+@PreAuthorize("hasAnyRole('OrganizationAdmin, ProjectManager')")
 @RequestMapping("/api/project")
 public class ProjectController {
 
